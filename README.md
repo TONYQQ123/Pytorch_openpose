@@ -41,7 +41,16 @@ Install other requirements with pip
 
 Download the pytorch models and put them in a directory named `model` in the project root directory
 
-#### Run the Demo
+#### Resize the video
+
+Resize:
+    
+    python Resize.py input.mp4 width height
+    
+Ex:
+    python Resize.py input.mp4 854 480
+
+#### Run the Demo (Use the video of correct size )
 
 Run:
 

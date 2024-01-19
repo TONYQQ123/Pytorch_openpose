@@ -62,16 +62,21 @@ def process_frame(frame, body=True, hands=True):
 # writing video with ffmpeg because cv2 writer failed
 # https://stackoverflow.com/questions/61036822/opencv-videowriter-produces-cant-find-starting-number-error
 import ffmpeg
+import subprocess
+
+
 
 # open specified video
 parser = argparse.ArgumentParser(
-        description="Process a video annotating poses detected.")
+      description="Process a video annotating poses detected.")
 parser.add_argument('file', type=str, help='Video file location to process.')
 parser.add_argument('--no_hands', action='store_true', help='No hand pose')
 parser.add_argument('--no_body', action='store_true', help='No body pose')
 args = parser.parse_args()
 video_file = args.file
 cap = cv2.VideoCapture(video_file)
+
+    	
 
 # get video file info
 ffprobe_result = ffprobe(args.file)
@@ -84,6 +89,11 @@ input_vcodec = videoinfo["codec_name"]
 
 # define a writer object to write to a movidified file
 postfix = info["format"]["format_name"].split(",")[0]
+
+#Change_DONG mp4
+postfix='mp4'
+#Change
+
 output_file = ".".join(video_file.split(".")[:-1])+".processed." + postfix
 
 
@@ -92,12 +102,13 @@ class Writer():
                  input_vcodec):
         if os.path.exists(output_file):
             os.remove(output_file)
+            
         self.ff_proc = (
             ffmpeg
             .input('pipe:',
                    format='rawvideo',
                    pix_fmt="bgr24",
-                   s='%sx%s'%(input_framesize[1],input_framesize[0]),
+                   s='%sx%s'%(int(input_framesize[1]),int(input_framesize[0])),
                    r=input_fps)
             .output(output_file, pix_fmt=input_pix_fmt, vcodec=input_vcodec)
             .overwrite_output()
@@ -123,9 +134,18 @@ while(cap.isOpened()):
 
     if writer is None:
         input_framesize = posed_frame.shape[:2]
-        writer = Writer(output_file, input_fps, input_framesize, input_pix_fmt,
+        
+        #Change_DONG video size
+        w=input_framesize[0] if input_framesize[0] % 2==0 else input_framesize[0]-1
+        h=input_framesize[1] if input_framesize[1] % 2==0 else input_framesize[1]-1
+        size_i=(w,h)
+        writer = Writer(output_file, input_fps, size_i, input_pix_fmt,
                         input_vcodec)
-
+        #Change
+        
+        #writer = Writer(output_file, input_fps, input_framesize, input_pix_fmt,
+        #               input_vcodec)
+			
     cv2.imshow('frame', posed_frame)
 
     # write the frame
