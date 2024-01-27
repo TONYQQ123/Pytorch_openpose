@@ -64,9 +64,6 @@ to use a image from the images folder or run
 
     python demo_video.py <video-file>
     
-if it occur a error of video-size. Try this
-
-    ffmpeg -i input_video.mp4 -vf "scale=854:480" -c:v libx264 output_video.mp4
 
 to process a video file (requires [ffmpeg-python][ffmpeg]).
 
@@ -82,7 +79,7 @@ to process a video file (requires [ffmpeg-python][ffmpeg]).
 ### Demo
 #### Skeleton
 
-![](images/skeleton.jpg)
+![](images/Pose.jpg)
 #### Body Pose Estimation
 
 ![](images/body_preview.jpg)
